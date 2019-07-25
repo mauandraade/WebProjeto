@@ -39,3 +39,4 @@ C:\Users\mauricio.filho\source\repos\SalesWebMvcc\SalesWebMvcc\obj\Debug\netcore
 C:\Users\mauricio.filho\source\repos\SalesWebMvcc\SalesWebMvcc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Create.g.cshtml.cs
 C:\Users\mauricio.filho\source\repos\SalesWebMvcc\SalesWebMvcc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Delete.g.cshtml.cs
 C:\Users\mauricio.filho\source\repos\SalesWebMvcc\SalesWebMvcc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Details.g.cshtml.cs
+C:\Users\mauricio.filho\source\repos\SalesWebMvcc\SalesWebMvcc\obj\Debug\netcoreapp2.1\Razor\Views\Sellers\Edit.g.cshtml.cs
