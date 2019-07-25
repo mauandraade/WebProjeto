@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvcc.Models;
+using SalesWebMvcc.Data;
 
 namespace SalesWebMvcc
 {
@@ -39,21 +40,24 @@ namespace SalesWebMvcc
             services.AddDbContext<SalesWebMvccContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("SalesWebMvccContext"), builder => 
                     builder.MigrationsAssembly("SalesWebMvcc")));
+
+            services.AddScoped<SeendingService>(); // registra nosso servico no sistema de injecao de independencia
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,SeendingService seendingService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seendingService.Seed();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
