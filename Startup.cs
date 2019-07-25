@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvcc.Models;
 using SalesWebMvcc.Data;
+using SalesWebMvcc.Services;
 
 namespace SalesWebMvcc
 {
@@ -42,6 +43,7 @@ namespace SalesWebMvcc
                     builder.MigrationsAssembly("SalesWebMvcc")));
 
             services.AddScoped<SeendingService>(); // registra nosso servico no sistema de injecao de independencia
+            services.AddScoped<SellerServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
