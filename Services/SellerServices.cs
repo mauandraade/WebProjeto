@@ -19,5 +19,10 @@ namespace SalesWebMvcc.Services
         {
             return _context.Seller.ToList(); // ele vai rodar o acesso ao banco de dados e retornar uma lista
         }
+        public void Insert(Seller obj)
+        {
+            _context.Add(obj);
+            _context.SaveChanges();
+        }
     }
 }
