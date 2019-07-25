@@ -21,6 +21,7 @@ namespace SalesWebMvcc.Services
         }
         public void Insert(Seller obj)
         {
+            obj.Department = _context.Department.First(); // ta pegando o primeiro departamento pra nao dar erro
             _context.Add(obj);
             _context.SaveChanges();
         }
