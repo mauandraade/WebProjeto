@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SalesWebMvcc.Models;
 using SalesWebMvcc.Services;
 using SalesWebMvcc.Models.ViewModels;
 using SalesWebMvcc.Services.Exceptions;
+using System.Diagnostics;
+using System;
 
 namespace SalesWebMvcc.Controllers
 {
@@ -51,13 +50,13 @@ namespace SalesWebMvcc.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value); // pegando o valor do id
             if(obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             return View(obj);
@@ -75,13 +74,13 @@ namespace SalesWebMvcc.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value);
             if(obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             
             return View(obj);
@@ -91,13 +90,13 @@ namespace SalesWebMvcc.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" }); ;
             }
 
             var obj = _sellerService.FindById(id.Value);
             if(obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
             List<Department> departments = _departmentService.FindAll();
@@ -112,21 +111,31 @@ namespace SalesWebMvcc.Controllers
         {
             if(id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" }); ;
             }
             try { 
             _sellerService.Update(seller);
             return RedirectToAction(nameof(Index));
 
             }
-            catch (NotFoundExcepetion)
+            catch (ApplicationException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbConcurrencyException)
+           
+        }
+
+
+        //ACAO DE ERRO
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier // Current?.Id ?? -----> Id opcional, ?? significa que se for nulo chamar a funcao HttpContext.TraceIdentifier // macete pra pegar o id interno da requisicao
+            };
+
+            return View(viewModel);
         }
         
     }
