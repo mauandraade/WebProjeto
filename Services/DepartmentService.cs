@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SalesWebMvcc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesWebMvcc.Services
 {
@@ -15,9 +16,13 @@ namespace SalesWebMvcc.Services
             _context = context;
         }
 
-        public List<Department> FindAll()
+        public async Task<List<Department>> FindAllAsync()//assincronas estudar
         {
-            return _context.Department.OrderBy(x => x.Name).ToList(); // Metood ordeyBy pra trazer por ordens os nomes
+            return await _context.Department.OrderBy(x => x.Name).ToListAsync(); // Metood ordeyBy pra trazer por ordens os nomes
         }
+
+        
+
+
     }
 }

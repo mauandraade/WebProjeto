@@ -17,39 +17,41 @@ namespace SalesWebMvcc.Services
             _context = context;
         }
 
-        public List<Seller> FindAll()
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.ToList(); // ele vai rodar o acesso ao banco de dados e retornar uma lista
+            return await _context.Seller.ToListAsync(); // ele vai rodar o acesso ao banco de dados e retornar uma lista
         }
-        public void Insert(Seller obj)
+        public async Task InsertAsync(Seller obj)
         {
            // obj.Department = _context.Department.First(); // ta pegando o primeiro departamento pra nao dar erro (porem nao precisa mais)
+
             _context.Add(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FindById(int id) // retornando o vendedor
+        public async Task<Seller> FindByIdAsync(int id) // retornando o vendedor
         {
-            return _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id);
+            return await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _context.Seller.Find(id); // puxando na lista o vendedor
+            var obj = await  _context.Seller.FindAsync(id); // puxando na lista o vendedor
             _context.Seller.Remove(obj); // removendo o vendendor
-            _context.SaveChanges(); // confirmando a remoção
+            await _context.SaveChangesAsync(); // confirmando a remoção
 ;        }
 
-        public void Update(Seller obj)
+        public async Task UpdateAsync(Seller obj)
         {
-            if (!_context.Seller.Any(x => x.Id == obj.Id))// verifica se ja existe --> o Any() serve para vericar se existe no bd a condicao que voce pos
+            bool hasAny = await  _context.Seller.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)// verifica se ja existe --> o Any() serve para vericar se existe no bd a condicao que voce pos
             {
                 throw new NotFoundException("Id not found");
             }
 
             try { 
             _context.Update(obj);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
 
             }
             catch (DbUpdateConcurrencyException e)
